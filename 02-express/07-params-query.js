@@ -21,7 +21,7 @@ app.get("/api/products/:productID", (req, res) => {
     (product) => product.id === parseInt(productID)
   );
   if (!productByID) {
-    return res.json(products);
+    return res.status(404).send(`<h1>Product Does Not Exist</h1>`);
   }
   return res.json(productByID);
 });
@@ -40,7 +40,7 @@ app.get("/api/v1/query", (req, res) => {
   if (filteredProducts.length < 1) {
     return res.status(200).json({ success: true, data: [] });
   }
-  return res.status(200).json(filteredProducts);
+  res.status(200).json(filteredProducts);
 });
 
 app.all("*", (req, res) => {
