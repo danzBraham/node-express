@@ -12,7 +12,7 @@ const authorize = require("./authorize.js");
 
 // app.use([logger, authorize]);
 // app.use(express.static("./public"));
-app.use(morgan("tiny"));
+app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
   res.status(200).send(`<h1>Home Page</h1>`);
