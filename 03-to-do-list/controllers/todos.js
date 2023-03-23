@@ -21,10 +21,9 @@ const createTodo = async (req, res) => {
 const getTodo = async (req, res) => {
   try {
     const { id: todoID } = req.params;
-    // const todo = await Todo.findById(todoID).exec();
-    const todo = await Todo.findOne({ _id: todoID }).exec();
+    const todo = await Todo.findById(todoID).exec();
     if (!todo) {
-      return res.status(404).json({ msg: `No todo with ID: ${todoID}` });
+      return res.status(404).json({ msg: `No to do with ID: ${todoID}` });
     }
     res.status(200).json({ todo });
   } catch (error) {
@@ -32,12 +31,33 @@ const getTodo = async (req, res) => {
   }
 };
 
-const updateTodo = (req, res) => {
-  res.send("update to do");
+const updateTodo = async (req, res) => {
+  try {
+    const { id: todoID } = req.params;
+    const todo = await Todo.findByIdAndUpdate(todoID, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!todo) {
+      return res.status(404).json({ msg: `No to do with ID: ${todoID}` });
+    }
+    res.status(200).json({ todo });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
 };
 
-const deleteTodo = (req, res) => {
-  res.send("delete to do");
+const deleteTodo = async (req, res) => {
+  try {
+    const { id: todoID } = req.params;
+    const todo = await Todo.findByIdAndDelete(todoID);
+    if (!todo) {
+      return res.status(404).json({ msg: `No to do with ID: ${todoID}` });
+    }
+    res.status(200).json({ todo });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
 };
 
 module.exports = {

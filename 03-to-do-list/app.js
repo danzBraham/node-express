@@ -6,12 +6,10 @@ const connectDB = require("./db/connect.js");
 require("dotenv").config();
 
 // middleware
+app.use(express.static("./public"));
 app.use(express.json());
 
-app.get("/hello", (req, res) => {
-  res.send("To Do List App");
-});
-
+// router
 app.use("/api/v1/todos", todos);
 
 const start = async () => {
