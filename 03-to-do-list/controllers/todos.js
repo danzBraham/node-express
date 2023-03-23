@@ -1,6 +1,6 @@
 const Todo = require("../models/Todo.js");
 
-const getAllTodos = async (req, res) => {
+const getAllTasks = async (req, res) => {
   try {
     const todos = await Todo.find({});
     res.status(200).json({ todos });
@@ -9,7 +9,7 @@ const getAllTodos = async (req, res) => {
   }
 };
 
-const createTodo = async (req, res) => {
+const createTask = async (req, res) => {
   try {
     const todo = await Todo.create(req.body);
     res.status(201).json({ todo });
@@ -18,12 +18,12 @@ const createTodo = async (req, res) => {
   }
 };
 
-const getTodo = async (req, res) => {
+const getTask = async (req, res) => {
   try {
     const { id: todoID } = req.params;
     const todo = await Todo.findById(todoID).exec();
     if (!todo) {
-      return res.status(404).json({ msg: `No to do with ID: ${todoID}` });
+      return res.status(404).json({ msg: `No task with ID: ${todoID}` });
     }
     res.status(200).json({ todo });
   } catch (error) {
@@ -31,7 +31,7 @@ const getTodo = async (req, res) => {
   }
 };
 
-const updateTodo = async (req, res) => {
+const updateTask = async (req, res) => {
   try {
     const { id: todoID } = req.params;
     const todo = await Todo.findByIdAndUpdate(todoID, req.body, {
@@ -39,7 +39,7 @@ const updateTodo = async (req, res) => {
       runValidators: true,
     });
     if (!todo) {
-      return res.status(404).json({ msg: `No to do with ID: ${todoID}` });
+      return res.status(404).json({ msg: `No task with ID: ${todoID}` });
     }
     res.status(200).json({ todo });
   } catch (error) {
@@ -47,12 +47,12 @@ const updateTodo = async (req, res) => {
   }
 };
 
-const deleteTodo = async (req, res) => {
+const deleteTask = async (req, res) => {
   try {
     const { id: todoID } = req.params;
     const todo = await Todo.findByIdAndDelete(todoID);
     if (!todo) {
-      return res.status(404).json({ msg: `No to do with ID: ${todoID}` });
+      return res.status(404).json({ msg: `No task with ID: ${todoID}` });
     }
     res.status(200).json({ todo });
   } catch (error) {
@@ -61,9 +61,9 @@ const deleteTodo = async (req, res) => {
 };
 
 module.exports = {
-  getAllTodos,
-  createTodo,
-  getTodo,
-  updateTodo,
-  deleteTodo,
+  getAllTasks,
+  createTask,
+  getTask,
+  updateTask,
+  deleteTask,
 };

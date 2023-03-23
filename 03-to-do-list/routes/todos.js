@@ -2,14 +2,14 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  getAllTodos,
-  createTodo,
-  getTodo,
-  updateTodo,
-  deleteTodo,
+  getAllTasks,
+  createTask,
+  getTask,
+  updateTask,
+  deleteTask,
 } = require("../controllers/todos.js");
 
-router.route("/").get(getAllTodos).post(createTodo);
-router.route("/:id").get(getTodo).put(updateTodo).delete(deleteTodo);
+router.route("/").get(getAllTasks).post(createTask);
+router.route("/:id").get(getTask).patch(updateTask).delete(deleteTask);
 
 module.exports = router;
