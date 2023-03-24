@@ -1,6 +1,6 @@
-const Todo = require("../models/Todo.js");
+import Todo from "../models/Todo.js";
 
-const getAllTasks = async (req, res) => {
+export const getAllTasks = async (req, res) => {
   try {
     const todos = await Todo.find({});
     res.status(200).json({ todos });
@@ -9,7 +9,7 @@ const getAllTasks = async (req, res) => {
   }
 };
 
-const createTask = async (req, res) => {
+export const createTask = async (req, res) => {
   try {
     const todo = await Todo.create(req.body);
     res.status(201).json({ todo });
@@ -18,7 +18,7 @@ const createTask = async (req, res) => {
   }
 };
 
-const getTask = async (req, res) => {
+export const getTask = async (req, res) => {
   try {
     const { id: todoID } = req.params;
     const todo = await Todo.findById(todoID).exec();
@@ -31,7 +31,7 @@ const getTask = async (req, res) => {
   }
 };
 
-const updateTask = async (req, res) => {
+export const updateTask = async (req, res) => {
   try {
     const { id: todoID } = req.params;
     const todo = await Todo.findByIdAndUpdate(todoID, req.body, {
@@ -47,7 +47,7 @@ const updateTask = async (req, res) => {
   }
 };
 
-const deleteTask = async (req, res) => {
+export const deleteTask = async (req, res) => {
   try {
     const { id: todoID } = req.params;
     const todo = await Todo.findByIdAndDelete(todoID);
@@ -58,12 +58,4 @@ const deleteTask = async (req, res) => {
   } catch (error) {
     res.status(500).json({ msg: error });
   }
-};
-
-module.exports = {
-  getAllTasks,
-  createTask,
-  getTask,
-  updateTask,
-  deleteTask,
 };

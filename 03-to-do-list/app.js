@@ -1,9 +1,10 @@
-const express = require("express");
+import express from "express";
 const app = express();
 const port = 3000;
-const todos = require("./routes/todos.js");
-const connectDB = require("./db/connect.js");
-require("dotenv").config();
+import todos from "./routes/todos.js";
+import connectDB from "./db/connect.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 // middleware
 app.use(express.static("./public"));

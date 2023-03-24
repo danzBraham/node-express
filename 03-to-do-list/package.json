@@ -2,7 +2,8 @@
   "name": "to-do-list",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "type": "module",
+  "exports": "./app.js",
   "scripts": {
     "start": "nodemon app.js"
   },
