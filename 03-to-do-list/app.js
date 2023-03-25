@@ -1,10 +1,12 @@
 import express from "express";
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 import todos from "./routes/todos.js";
 import connectDB from "./db/connect.js";
 import dotenv from "dotenv";
 dotenv.config();
+import notFound from "./middleware/not-found.js";
+import errorHandler from "./middleware/error-handler.js";
 
 // middleware
 app.use(express.static("./public"));
@@ -12,6 +14,10 @@ app.use(express.json());
 
 // router
 app.use("/api/v1/todos", todos);
+
+// middleware
+app.use(notFound);
+app.use(errorHandler);
 
 const start = async () => {
   try {
