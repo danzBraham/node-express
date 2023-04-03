@@ -2,17 +2,17 @@ import Todo from "../models/Todo.js";
 import asyncWrapper from "../middleware/async-wrapper.js";
 import { createCustomError } from "../errors/custom-error.js";
 
-export const getAllTasks = asyncWrapper(async (req, res) => {
+export const getAllTodos = asyncWrapper(async (req, res) => {
   const todos = await Todo.find({});
   res.status(200).json({ todos });
 });
 
-export const createTask = asyncWrapper(async (req, res) => {
+export const createTodo = asyncWrapper(async (req, res, next) => {
   const todo = await Todo.create(req.body);
   res.status(201).json({ todo });
 });
 
-export const getTask = asyncWrapper(async (req, res, next) => {
+export const getTodo = asyncWrapper(async (req, res, next) => {
   const { id: todoID } = req.params;
   const todo = await Todo.findById(todoID).exec();
   if (!todo) {
@@ -21,7 +21,7 @@ export const getTask = asyncWrapper(async (req, res, next) => {
   res.status(200).json({ todo });
 });
 
-export const updateTask = asyncWrapper(async (req, res, next) => {
+export const updateTodo = asyncWrapper(async (req, res, next) => {
   const { id: todoID } = req.params;
   const todo = await Todo.findByIdAndUpdate(todoID, req.body, {
     new: true,
@@ -33,7 +33,7 @@ export const updateTask = asyncWrapper(async (req, res, next) => {
   res.status(201).json({ todo });
 });
 
-export const deleteTask = asyncWrapper(async (req, res, next) => {
+export const deleteTodo = asyncWrapper(async (req, res, next) => {
   const { id: todoID } = req.params;
   const todo = await Todo.findByIdAndDelete(todoID);
   if (!todo) {

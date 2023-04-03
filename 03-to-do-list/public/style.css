@@ -32,12 +32,12 @@ body {
   border-radius: 4px;
   box-shadow: -8px 8px 0px var(--shadow-two);
   transition: all 0.15s ease-in-out;
-  transform: translate(8px, -8px);
+  /* transform: translate(8px, -8px); */
 }
 
 .container-form:focus-within {
   box-shadow: none;
-  transform: translate(0px, 0px);
+  transform: translate(-8px, 8px);
 }
 
 .container-form h1 {
@@ -83,6 +83,8 @@ body {
 
 .container-form form button:focus {
   outline: 2px solid var(--second-color);
+  transform: translate(4px, -4px);
+  box-shadow: -4px 4px 0 var(--shadow-two);
 }
 
 .container-form form button:hover {
@@ -95,32 +97,32 @@ body {
   box-shadow: none;
 }
 
-.container-form .form-alert {
+.form-alert {
   display: none;
   margin-top: 6px;
-  color: #112;
+  color: #000;
   padding: 5px;
   text-align: center;
   font-weight: 600;
   border-radius: 4px;
 }
 
-.container-form .form-alert.success {
+.form-alert.success {
   background-color: #86efac;
 }
 
-.container-form .form-alert.failed {
+.form-alert.failed {
   background-color: #fca5a5;
 }
 
-.container-task {
+.container-todo {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.container-task .loading-text {
+.container-todo .loading-text {
   font-size: 36px;
   color: var(--main-color);
   font-weight: 700;
@@ -128,7 +130,7 @@ body {
   margin-bottom: 20px;
 }
 
-.container-task .empty-list {
+.container-todo .empty-list {
   width: 70%;
   background-color: #ffe;
   border: 1px solid var(--main-color);
@@ -139,7 +141,7 @@ body {
   box-shadow: -8px 8px 0px var(--shadow-two);
 }
 
-.container-task .tasks {
+.container-todo .todos {
   display: grid;
   width: 80%;
   margin: auto;
@@ -149,32 +151,37 @@ body {
   justify-content: center;
 }
 
-.container-task .tasks .task {
+.container-todo .todos .todo {
   background-color: #ffe;
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 100px;
-  font-size: 18px;
+  font-size: 20px;
   border: 1px solid var(--main-color);
   border-radius: 4px;
   box-shadow: -8px 8px 0px var(--shadow-two);
   transition: all 0.15s ease-in-out;
 }
 
-.container-task .tasks .task:hover {
+.container-todo .todos .todo-completed {
+  text-decoration: line-through;
+}
+
+.container-todo .todos .todo:hover {
   box-shadow: none;
   transform: translate(-8px, 8px);
 }
 
-.container-task .tasks .task .icon {
+.container-todo .todos .todo .icon {
   display: flex;
   gap: 15px;
   justify-content: center;
   align-items: center;
 }
 
-.container-task .tasks .task .icon button {
+.container-todo .todos .todo .icon button {
   background: none;
   border: none;
   margin: 0;
@@ -183,21 +190,21 @@ body {
   outline: none;
 }
 
-.container-task .tasks .task .icon .fa-pen {
+.container-todo .todos .todo .icon .fa-pen {
   color: #3733FF;
   cursor: pointer;
   transition: all 0.15s ease-in;
-  font-size: 20px;
+  font-size: 30px;
 }
 
-.container-task .tasks .task .icon .fa-trash {
+.container-todo .todos .todo .icon .fa-trash {
   color: #FF3333;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
-  font-size: 20px;
+  font-size: 30px;
 }
 
-.container-task .tasks .task .icon .fa-pen:hover, .container-task .tasks .task .icon .fa-trash:hover {
+.container-todo .todos .todo .icon .fa-pen:hover, .container-todo .todos .todo .icon .fa-trash:hover {
   transform: translateY(-4px);
 }
 
@@ -208,16 +215,16 @@ body {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.2);
-  display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(3px);
+  display: none;
 }
 
 .modal form {
   padding: 20px 30px 30px;
   width: fit-content;
-  background-color: var(--second-color);
+  background-color: hsl(178, 73%, 92%);
   border: 2px solid var(--main-color);
   border-radius: 8px;
   position: relative;
@@ -240,11 +247,11 @@ body {
 }
 
 .modal form .container-input {
-  margin: 20px 0;
+  margin: 30px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .modal form .container-input .input-box {
@@ -278,12 +285,12 @@ body {
 
 .modal form button {
   width: 100%;
-  padding: 5px 20px;
+  padding: 8px 20px;
   background-color: var(--shadow-one);
   border: 1px solid var(--main-color);
   border-radius: 4px;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 600;
   color: #fff;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
@@ -297,4 +304,129 @@ body {
 .modal form button:active {
   transform: translate(0px, 0px);
   box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  .container-form {
+    width: 80%;
+  }
+
+  .container-form form input {
+    width: 100%;
+  }
+
+  .container-todo .todos {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media (max-width: 512px) {
+  .container-form {
+    width: 90%;
+  }
+
+  .container-form h1 {
+    font-size: 26px;
+  }
+
+  .container-form form input {
+    font-size: 14px;
+  }
+
+  .container-form form button {
+    font-size: 16px;
+  }
+
+  .container-todo .todos .todo {
+    gap: 10px;
+    font-size: 14px;
+  }
+
+  .container-todo .todos .todo .icon .fa-pen {
+    font-size: 20px;
+  }
+
+  .container-todo .todos .todo .icon .fa-trash {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 390px) {
+  .container-form {
+    width: 100%;
+    padding: 20px 20px;
+  }
+
+  .container-form h1 {
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+
+  .container-form form input {
+    font-size: 12px;
+  }
+
+  .container-form form button {
+    font-size: 14px;
+  }
+
+  .container-todo .todos {
+    width: 100%;
+  }
+
+  .container-todo .todos .todo {
+    width: 100%;
+    gap: 5px;
+    font-size: 12px;
+  }
+
+  .container-todo .todos .todo .icon .fa-pen {
+    font-size: 15px;
+  }
+
+  .container-todo .todos .todo .icon .fa-trash {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 350px) {
+  body {
+    padding: 0 30px;
+  }
+
+  .container-form h1 {
+    font-size: 22px;
+  }
+
+  .container-form form input {
+    font-size: 12px;
+  }
+
+  .container-form form button {
+    font-size: 14px;
+  }
+
+  .container-todo .todos {
+    width: 100%;
+  }
+
+  .container-todo .todos .todo {
+    width: 100%;
+    gap: 5px;
+    font-size: 12px;
+  }
+
+  .container-todo .todos .todo .icon .fa-pen {
+    font-size: 15px;
+  }
+
+  .container-todo .todos .todo .icon .fa-trash {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 330px) {
+  body {
+    padding: 0 20px;
+  }
 }

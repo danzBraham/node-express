@@ -1,28 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector("form");
-  const formInput = document.querySelector("form input");
-  const formAlert = document.querySelector(".form-alert");
-  const containerTask = document.querySelector(".container-task");
-  const loading = document.querySelector(".loading-text");
-  const tasks = document.querySelector(".tasks");
+  const createForm = $(".create-form");
+  const editForm = $(".edit-form");
+  const formInput = $("form input");
+  const formAlertCreate = $(".container-form .form-alert");
+  const formAlertEdit = $(".modal .form-alert");
+  const containerTodo = $(".container-todo");
+  const loading = $(".loading-text");
+  const todosDiv = $(".todos");
+  const modal = $(".modal");
+  const closeBtn = $(".close-btn");
 
-  // Get All Tasks
-  const showTask = async () => {
-    loading.style.display = "flex";
+  // Get All Todos
+  const showTodos = async () => {
+    loading.css("display", "flex");
     try {
       const {
         data: { todos },
       } = await axios.get("/api/v1/todos");
       if (todos.length < 1) {
-        containerTask.innerHTML =
-          '<h5 class="empty-list">No tasks in your to do list</h5>';
-        loading.style.display = "none";
+        containerTodo.html(
+          '<h5 class="empty-list">No task in your to do list</h5>'
+        );
+        loading.hide();
         return;
       }
-      const allTasks = todos
+      const alltodos = todos
         .map((todo) => {
           const { _id: todoID, completed, name } = todo;
-          return `<div class="task">
+          return `<div class="todo ${completed && "todo-completed"}">
                     <h3>${name}</h3>
                     <div class="icon">
                       <button class="edit-btn" data-id="${todoID}"><i class="fa-solid fa-pen"></i></button>
@@ -31,53 +36,102 @@ document.addEventListener("DOMContentLoaded", () => {
                   </div>`;
         })
         .join("");
-      tasks.innerHTML = allTasks;
+      todosDiv.html(alltodos);
     } catch (error) {
-      containerTask.innerHTML =
-        '<h5 class="empty-list">There was an error, please try again later...</h5>';
+      containerTodo.html(
+        '<h5 class="empty-list">There was an error, please try again later...</h5>'
+      );
     }
-    loading.style.display = "none";
+    loading.hide();
   };
 
-  showTask();
+  showTodos();
 
-  // Create Task
-  form.addEventListener("submit", async (e) => {
+  // Create Todo
+  createForm.submit(async (e) => {
     e.preventDefault();
-    const name = formInput.value;
+    const name = formInput.val();
 
     try {
       await axios.post("/api/v1/todos", { name });
-      showTask();
-      formInput.value = null;
-      formAlert.style.display = "block";
-      formAlert.textContent = "Successfully Added Task!";
-      formAlert.classList.add("success");
+      showTodos();
+      formInput.val(null);
+      formAlertCreate.css("display", "block");
+      formAlertCreate.text("Successfully Added Todo!");
+      formAlertCreate.addClass("success");
     } catch (error) {
-      formAlert.style.display = "block";
-      formAlert.textContent = "Failed to Add Task!";
-      formAlert.classList.add("failed");
+      formAlertCreate.css("display", "block");
+      formAlertCreate.text("Failed to Add Todo!");
+      formAlertCreate.addClass("failed");
     }
+
     setTimeout(() => {
-      formAlert.style.display = "none";
-      formAlert.classList.remove("success");
-      formAlert.classList.remove("failed");
+      formAlertCreate.hide().removeClass("success failed");
     }, 3000);
   });
 
-  // Delete Task
-  tasks.addEventListener("click", async (e) => {
-    const el = e.target;
-    if (el.parentElement.classList.contains("delete-btn")) {
-      loading.style.display = "flex";
-      const id = el.parentElement.dataset.id;
+  // Update Todo
+  todosDiv.on("click", async (e) => {
+    const el = $(e.target);
+    if (el.parent().hasClass("edit-btn")) {
+      const id = el.parent().data("id");
       try {
-        await axios.delete(`/api/v1/todos/${id}`);
-        showTask();
+        const {
+          data: { todo },
+        } = await axios(`/api/v1/todos/${id}`);
+        const { _id, name, completed } = todo;
+        $("input#id").val(_id);
+        $("input#name").val(name);
+        if (completed) {
+          $("input#completed").prop("checked", true);
+        }
+        modal.css("display", "flex");
       } catch (error) {
         console.log(error);
       }
     }
-    loading.style.display = "none";
+  });
+
+  editForm.submit(async (e) => {
+    const id = $("input#id").val();
+    e.preventDefault();
+    try {
+      await axios.patch(`/api/v1/todos/${id}`, {
+        name: $("input#name").val(),
+        completed: $("input#completed").prop("checked"),
+      });
+      showTodos();
+      formAlertEdit.css("display", "block");
+      formAlertEdit.text("Successfully Edit Todo!");
+      formAlertEdit.addClass("success");
+    } catch (error) {
+      console.log(error);
+      formAlertEdit.css("display", "block");
+      formAlertEdit.text("Failed to Edit Todo!");
+      formAlertEdit.addClass("failed");
+    }
+
+    setTimeout(() => {
+      formAlertEdit.hide().removeClass("success failed");
+    }, 3000);
+  });
+
+  closeBtn.on("click", (e) => {
+    $(".modal input").val(null);
+    modal.hide();
+  });
+
+  // Delete Todo
+  todosDiv.on("click", async (e) => {
+    const el = $(e.target);
+    if (el.parent().hasClass("delete-btn")) {
+      const id = el.parent().data("id");
+      try {
+        await axios.delete(`/api/v1/todos/${id}`);
+        showTodos();
+      } catch (error) {
+        console.log(error);
+      }
+    }
   });
 });

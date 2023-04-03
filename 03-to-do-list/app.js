@@ -1,10 +1,10 @@
 import express from "express";
 const app = express();
 const port = process.env.PORT || 3000;
-import todos from "./routes/todos.js";
 import connectDB from "./db/connect.js";
 import dotenv from "dotenv";
 dotenv.config();
+import todos from "./routes/todos.js";
 import notFound from "./middleware/not-found.js";
 import errorHandler from "./middleware/error-handler.js";
 

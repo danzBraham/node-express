@@ -2,14 +2,14 @@ import express from "express";
 const router = express.Router();
 
 import {
-  getAllTasks,
-  createTask,
-  getTask,
-  updateTask,
-  deleteTask,
+  getAllTodos,
+  createTodo,
+  getTodo,
+  updateTodo,
+  deleteTodo,
 } from "../controllers/todos.js";
 
-router.route("/").get(getAllTasks).post(createTask);
-router.route("/:id").get(getTask).patch(updateTask).delete(deleteTask);
+router.route("/").get(getAllTodos).post(createTodo);
+router.route("/:id").get(getTodo).patch(updateTodo).delete(deleteTodo);
 
 export default router;
