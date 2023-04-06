@@ -5,16 +5,19 @@ import express from "express";
 const app = express();
 const port = process.env.PORT || 3000;
 import connectDB from "./db/connect.js";
-import todos from "./routes/todos.js";
+import productsRouter from "./routes/products.js";
 import notFound from "./middleware/not-found.js";
 import errorHandler from "./middleware/error-handler.js";
 
 // middleware
-app.use(express.static("./public"));
 app.use(express.json());
 
-// router
-app.use("/api/v1/todos", todos);
+// routes
+app.get("/", (req, res) => {
+  res.send(`<h1>Store API</h1><a href="/api/v1/products">Products</a>`);
+});
+
+app.use("/api/v1/products", productsRouter);
 
 // middleware
 app.use(notFound);
@@ -27,7 +30,7 @@ const start = async () => {
       console.log(`Server Listening on Port ${port}...`);
     });
   } catch (error) {
-    console.log(error);
+    console.timeLog(error);
   }
 };
 

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+$(function () {
   const createForm = $(".create-form");
   const editForm = $(".edit-form");
   const formInput = $("form input");
