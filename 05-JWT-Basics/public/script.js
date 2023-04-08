@@ -1,73 +1,69 @@
-$(function () {
-  const formDOM = $(".form");
-  const usernameInputDOM = $(".username-input");
-  const passwordInputDOM = $(".password-input");
-  const formAlertDOM = $(".form-alert");
-  const resultDOM = $(".result");
-  const btnDOM = $("#data");
-  const tokenDOM = $(".token");
+const formDOM = document.querySelector(".form");
+const usernameInputDOM = document.querySelector(".username-input");
+const passwordInputDOM = document.querySelector(".password-input");
+const formAlertDOM = document.querySelector(".form-alert");
+const resultDOM = document.querySelector(".result");
+const btnDOM = document.querySelector("#data");
+const tokenDOM = document.querySelector(".token");
 
-  formDOM.submit(async (e) => {
-    formAlertDOM.removeClass("text-success");
-    tokenDOM.removeClass("text-success");
-    e.preventDefault();
+formDOM.addEventListener("submit", async (e) => {
+  formAlertDOM.classList.remove("text-success");
+  tokenDOM.classList.remove("text-success");
 
-    const username = usernameInputDOM.val();
-    const password = passwordInputDOM.val();
+  e.preventDefault();
+  const username = usernameInputDOM.value;
+  const password = passwordInputDOM.value;
 
-    try {
-      const { data } = await axios.get("/api/v1/login", {
-        username,
-        password,
-      });
+  try {
+    const { data } = await axios.post("/api/v1/login", { username, password });
 
-      formAlertDOM.css("display", "block");
-      formAlertDOM.text(data.msg);
-      formAlertDOM.addClass("text-success");
-      usernameInputDOM.val(null);
-      passwordInputDOM.val(null);
+    formAlertDOM.style.display = "block";
+    formAlertDOM.textContent = data.msg;
 
-      localStorage.setItem("token", data.token);
-      resultDOM.empty();
-      tokenDOM.text("token present");
-      tokenDOM.addClass("text-success");
-    } catch (error) {
-      formAlertDOM.css("display", "block");
-      formAlertDOM.text(error.response.data.msg);
-      localStorage.removeItem("token");
-      resultDOM.empty();
-      tokenDOM.text("no token present");
-      tokenDOM.removeClass("text-success");
-    }
-    setTimeout(() => {
-      formAlertDOM.hide();
-    }, 2000);
-  });
+    formAlertDOM.classList.add("text-success");
+    usernameInputDOM.value = "";
+    passwordInputDOM.value = "";
 
-  btnDOM.on("click", async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const { data } = await axios.get("/api/v1/dashboard", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      resultDOM.html(`<h5>${data.msg}</h5><p>${data.secret}</p`);
-      data.secret;
-    } catch (error) {
-      localStorage.removeItem("token");
-      resultDOM.html(`<p>${error.response.data.msg}</p>`);
-    }
-  });
-
-  const checkToken = () => {
-    tokenDOM.removeClass("text-success");
-    const token = localStorage.getItem("token");
-    if (token) {
-      tokenDOM.text("token present");
-      tokenDOM.addClass("text-success");
-    }
-  };
-
-  checkToken();
+    localStorage.setItem("token", data.token);
+    resultDOM.innerHTML = "";
+    tokenDOM.textContent = "token present";
+    tokenDOM.classList.add("text-success");
+  } catch (error) {
+    formAlertDOM.style.display = "block";
+    formAlertDOM.textContent = error.response.data.msg;
+    localStorage.removeItem("token");
+    resultDOM.innerHTML = "";
+    tokenDOM.textContent = "no token present";
+    tokenDOM.classList.remove("text-success");
+  }
+  setTimeout(() => {
+    formAlertDOM.style.display = "none";
+  }, 2000);
 });
+
+btnDOM.addEventListener("click", async () => {
+  const token = localStorage.getItem("token");
+  try {
+    const { data } = await axios.get("/api/v1/dashboard", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    resultDOM.innerHTML = `<h5>${data.msg}</h5><p>${data.secret}</p>`;
+  } catch (error) {
+    localStorage.removeItem("token");
+    resultDOM.innerHTML = `<p>${error.response.data.msg}</p>`;
+  }
+});
+
+const checkToken = () => {
+  tokenDOM.classList.remove("text-success");
+
+  const token = localStorage.getItem("token");
+  if (token) {
+    tokenDOM.textContent = "token present";
+    tokenDOM.classList.add("text-success");
+  }
+};
+
+checkToken();
