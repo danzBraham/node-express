@@ -1,4 +1,4 @@
-const { readFile, writeFile } = require("fs").promises;
+const { readFile, writeFile } = require('fs').promises;
 // const util = require("util");
 
 // const getText = (path) => {
@@ -48,17 +48,18 @@ const { readFile, writeFile } = require("fs").promises;
 
 const start = async () => {
   try {
-    const first = await readFile("./content/first.txt", "utf-8");
+    const first = await readFile('./content/first.txt', 'utf-8');
     console.log(first);
-    const second = await readFile("./content/second.txt", "utf-8");
+    const second = await readFile('./content/second.txt', 'utf-8');
     console.log(second);
     await writeFile(
-      "./content/result-await.txt",
+      './content/result-await.txt',
       `Learn NodeJS is so fun, ${first} and ${second}`
     );
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
 start();
+console.log('start');

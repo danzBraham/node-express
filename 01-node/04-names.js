@@ -1,8 +1,8 @@
 // Local
-const secret = "SUPER SECRET";
+const secret = 'SUPER SECRET';
 
 // Share
-const owi = "Owi";
-const abra = "Abra";
+const owi = 'Owi';
+const abra = 'Abra';
 
 module.exports = { owi, abra };

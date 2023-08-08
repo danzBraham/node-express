@@ -1,4 +1,4 @@
 setInterval(() => {
-  console.log("Hello World");
+  console.log('Hello World');
 }, 2000);
-console.log("Start from here...");
+console.log('Start from here...');

@@ -1,4 +1,4 @@
-const name = "Zidan Abraham";
+const name = 'Zidan Abraham';
 const age = 18;
 
 if (age < 18) {
