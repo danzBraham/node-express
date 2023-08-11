@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 const {
   getPeople,
@@ -6,18 +6,18 @@ const {
   createPersonPostman,
   updatePerson,
   deletePerson,
-} = require("../controllers/people.js");
+} = require('../controllers/people.js');
 
 // Flavour One
-router.get("/", getPeople);
-router.post("/", createPerson);
-router.post("/postman", createPersonPostman);
-router.put("/:id", updatePerson);
-router.delete("/:id", deletePerson);
+// router.get('/', getPeople);
+// router.post('/', createPerson);
+// router.post('/postman', createPersonPostman);
+// router.put('/:id', updatePerson);
+// router.delete('/:id', deletePerson);
 
 // Flavour Two
-// router.route("/").get(getPeople).post(createPerson);
-// router.route("/postman").post(createPersonPostman);
-// router.route("/:id").put(updatePerson).delete(deletePerson);
+router.route('/').get(getPeople).post(createPerson);
+router.route('/postman').post(createPersonPostman);
+router.route('/:id').put(updatePerson).delete(deletePerson);
 
 module.exports = router;
